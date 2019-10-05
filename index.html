@@ -19,7 +19,7 @@
 	</div>
 	
 	<div class="row">
-		<div id="cuadro2" class="col-sm-12 col-md-12 col-lg-12 ocultar">
+		<div id="cuadro2" class="col-sm-12 col-md-12 col-lg-12">
 			<form class="form-horizontal" action="" method="POST">
 				<div class="form-group">
 					<h3 class="col-sm-offset-2 col-sm-8 text-center">					
@@ -118,8 +118,13 @@
 			listar();
 		});
 
+		$('#btn_listar').on("click", function() {
+			listar();
+		})
+
 		var listar = function() {
 			var table = $('#dt_cliente').DataTable({
+				"destroy": true,
 				"ajax": {
 					"method": "POST",
 					"url": "listar.php"

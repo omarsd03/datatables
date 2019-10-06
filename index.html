@@ -64,7 +64,7 @@
 							<th>Nombre</th>
 							<th>Apellidos</th>
 							<th>Dni</th>
-							<th></th>
+							<th>Opciones</th>
 						</tr>
 					</thead>					
 				</table>
@@ -114,6 +114,10 @@
 
 	<script>
 
+		var botones = "";
+		botones += "<button type='button' class='editar btn btn-primary'><i class='fa fa-pencil-square-o'></i></button>	";
+		botones += "<button type='button' class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar' ><i class='fa fa-trash-o'></i></button>";
+
 		$(document).on("ready", function(){
 			listar();
 		});
@@ -123,8 +127,9 @@
 		})
 
 		var listar = function() {
+
 			var table = $('#dt_cliente').DataTable({
-				"destroy": true,
+				"destroy": true, // Con esta linea, la tabla se reinicializa sin la ventana 
 				"ajax": {
 					"method": "POST",
 					"url": "listar.php"
@@ -132,10 +137,36 @@
 				"columns": [
 					{"data": "nombre"},
 					{"data": "apellidos"},
-					{"data": "dni"}
+					{"data": "dni"},
+					{"defaultContent": botones}
 				],
 				"language": idioma
 			});
+
+			obtenerDataEditar("#dt_cliente tbody", table);
+			obtenerIdEliminar("#dt_cliente tbody", table);
+
+		}
+
+		var obtenerDataEditar = function(tbody, table) {
+
+			$(tbody).on('click', '.editar', function() {
+				var data = table.row( $(this).parents('tr') ).data();
+				var idUsuario = $('#idusuario').val(data.idusuario),
+					nombre = $('#nombre').val(data.nombre),
+					apellidos = $('#apellidos').val(data.apellidos),
+					dni = $('#dni').val(data.dni);
+			})
+
+		}
+		
+		var obtenerIdEliminar = function(tbody, table) {
+
+			$(tbody).on('click', '.eliminar', function() {
+				var data = table.row( $(this).parents('tr') ).data();
+				var idUsuario = $('#frmEliminarUsuario #idusuario').val(data.idusuario)
+			})
+
 		}
 
 		var idioma = {
